@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-import org.openjdk.jmh.annotations.Benchmark;
+/*import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Level;
@@ -59,4 +59,6 @@ public class ParallelStreamBenchmark {
     public void tearDown() {
         System.gc();
     }
+
 }
+*/

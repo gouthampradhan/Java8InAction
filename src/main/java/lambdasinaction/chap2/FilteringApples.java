@@ -1,6 +1,7 @@
 package lambdasinaction.chap2;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class FilteringApples{
 
@@ -27,6 +28,19 @@ public class FilteringApples{
 		// []
 		List<Apple> redAndHeavyApples = filter(inventory, new AppleRedAndHeavyPredicate());
 		System.out.println(redAndHeavyApples);
+
+		//anonymous class
+		List<Apple> greenAppleAnonymous = filter(inventory, new ApplePredicate() {
+			@Override
+			public boolean test(Apple a) {
+				return "green".equals(a.color);
+			}
+		}) ;
+		System.out.println("Anonymous class result: " + greenAppleAnonymous);
+
+		//lambda
+		List<Apple> greenAppleLambda = filter(inventory, (Apple a) -> {return "green".equals(a.color);});
+		System.out.println("Lambda result: " + greenAppleLambda);
 
 		// [Apple{color='red', weight=120}]
 		List<Apple> redApples2 = filter(inventory, new ApplePredicate() {
@@ -77,7 +91,17 @@ public class FilteringApples{
 			}
 		}
 		return result;
-	}       
+	}
+
+	public static <T> List<T> filter(List<T> inventory, Predicate<T> p){
+		List<T> result = new ArrayList<>();
+		for(T t : inventory){
+			if(p.test(t)){
+				result.add(t);
+			}
+		}
+		return result;
+	}
 
 	public static class Apple {
 		private int weight = 0;
