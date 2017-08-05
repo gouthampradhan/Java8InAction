@@ -2,9 +2,11 @@ package lambdasinaction.chap3;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -28,11 +30,32 @@ public class MethodReference {
         System.out.println(applesWithWeight);
 
         List<PropertyMap<Integer, String>> list = Arrays.asList(new PropertyMap<>(12, "green"), new PropertyMap<>(14, "red"),
-                new PropertyMap<>(12, "blue"), new PropertyMap<>(12, "pink"));
+                new PropertyMap<>(12, "blue"), new PropertyMap<>(19, "pink"));
         BiFunction<Integer, String, Apple> bf = Apple::new;
         List<Apple> applesWithWeightAndColor = map(list, bf);
         System.out.println("Apples with weight and color created");
         System.out.println(applesWithWeightAndColor);
+
+        //sort using lambda expression
+        applesWithWeight.sort((Apple a1, Apple a2) -> a1.getWeight().compareTo(a2.getWeight()));
+
+        //sort by defining a comparator using lambda
+        Comparator<Apple> c = Comparator.comparing((Apple apple) -> apple.getWeight());
+        applesWithWeight.sort(c);
+
+        //sort by method reference
+        applesWithWeight.sort(Comparator.comparing(Apple::getWeight));
+        System.out.println("After sorting");
+        System.out.println(applesWithWeight);
+
+        System.out.println("After sorting when weight are same");
+        applesWithWeightAndColor.sort(Comparator.comparing(Apple::getWeight).thenComparing(Apple::getColor));
+        System.out.println(applesWithWeightAndColor);
+
+        System.out.println("Multiple predicate");
+        Apple apple = applesWithWeightAndColor.get(0);
+        boolean testResult = ((Predicate<Apple>) (Apple app) -> app.getWeight() > 10).and((Apple app) -> "blue".equals(app.getColor())).test(apple);
+        System.out.println(testResult);
     }
 
     private static <I, A> List<A> map(List<I> weight, Function<I, A> f){
